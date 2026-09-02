@@ -1,3 +1,29 @@
 [submodule "qbraid-lab-demo"]
 	path = qbraid-lab-demo
 	url = https://github.com/qBraid/qbraid-lab-demo.git
+[submodule "tutorials/Q-Cliff"]
+	path = tutorials/Q-Cliff
+	url = https://github.com/qBraid/Q-Cliff.git
+[submodule "tutorials/IEEE_QCE25_QC_on_QC_Tutorial"]
+	path = tutorials/IEEE_QCE25_QC_on_QC_Tutorial
+	url = https://github.com/qBraid/IEEE_QCE25_QC_on_QC_Tutorial.git
+	shallow = true
+[submodule "tutorials/Quantum-Reservoir-Computing"]
+	path = tutorials/Quantum-Reservoir-Computing
+	url = https://github.com/qBraid/Quantum-Reservoir-Computing.git
+[submodule "tutorials/Generalized-Superfast-Encoding"]
+	path = tutorials/Generalized-Superfast-Encoding
+	url = https://github.com/qBraid/GSE-tutorial.git
+[submodule "tutorials/Error-Mitigation"]
+	path = tutorials/Error-Mitigation
+	url = https://github.com/qBraid/Error-Mitigation.git
+[submodule "tutorials/Clifford-Noise-Reduction"]
+	path = tutorials/Clifford-Noise-Reduction
+	url = https://github.com/qBraid/Clifford-Noise-Reduction.git
+[submodule "tutorials/Shor-Style-Syndrome-Extraction"]
+	path = tutorials/Shor-Style-Syndrome-Extraction
+	url = https://github.com/qBraid/Shor-Style-Syndrome-Extraction.git
+[submodule "tutorials/IEEE_QCE23_qBraid_Tutorial"]
+	path = tutorials/IEEE_QCE23_qBraid_Tutorial
+	url = https://github.com/qBraid/IEEE_QCE23_qBraid_Tutorial.git
+	shallow = true

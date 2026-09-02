@@ -1,0 +1,24 @@
+# QUEST core environment
+#
+# Covers nb1, nb2, nb4, nb5, nb6, nb7, nb8, nb9, nb10 — nine of the ten notebooks.
+# Everything here installs from wheels; nothing needs a compiler.
+#
+# Only the versions under "Tested with" below have actually been verified. The lower
+# bounds are the earliest releases known to contain the APIs the notebooks use, not a
+# tested floor. If you hit trouble, install the tested versions exactly.
+
+qiskit>=2.1              # QFTGate; Unroller and implicit-transpile execute() are long gone
+qiskit-aer>=0.15
+qbraid>=0.12
+numpy>=1.26
+scipy>=1.11
+matplotlib>=3.8
+pandas>=2.0
+
+scikit-learn>=1.4        # nb5  variational classifier on Iris
+networkx>=3.2            # nb6  Max-Cut graphs, nb10 QAOA test case
+cvxpy>=1.5               # nb6  Goemans-Williamson SDP baseline
+
+# Tested with: qiskit 2.5.2, qiskit-aer 0.17.2, qbraid 0.12.2, numpy 2.5.2,
+#              scipy 1.18.1, matplotlib 3.11.1, pandas 3.0.5, scikit-learn 1.9.0,
+#              networkx 3.6.1, cvxpy 1.9.2  (Python 3.12)
