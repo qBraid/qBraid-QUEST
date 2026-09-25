@@ -17,3 +17,6 @@ env/
 .vscode/
 .idea/
 *.swp
+
+# Internal notes, not for the public repo
+TAGGING.md
