@@ -11,6 +11,7 @@ Static checks, every notebook:
   - every qBraid hardware submission passes tags=QUEST_JOB_TAGS
   - every code cell compiles (IPython magics are skipped)
   - relative links in the notebooks and the top-level Markdown files resolve
+  - no stale internal references (old nbN numbering, "in this series", "Starter N")
 
 Execution: each notebook runs top to bottom in a fresh namespace, stopping at its
 first hardware cell. The introductory notebooks leave RUN_ON_HARDWARE = False, so
@@ -34,6 +35,9 @@ MILESTONES = {"setup", "simulate", "hardware", "compare"}
 TAG_RE = re.compile(r"^quest-([a-z0-9]+)-([a-z0-9]+)-([a-z]+)$")
 # A cell that talks to qBraid hardware. The introductory notebooks guard theirs with
 # RUN_ON_HARDWARE, so they are run; for the others, execution stops at the first one.
+# Old internal names that readers cannot resolve. Refer to notebooks by name, with a link.
+STALE_RE = re.compile(r"\bnb\d{1,2}\b|quest_nb\d|\bStarter \d|in this series|intermediate and advanced series"
+                      r"|\b(Foundations|Algorithms|Chemistry( and| &) Physics|Cryptography|Systems)( and \w+)? series\b")
 HW_MARKERS = ("device.run(", "devices[", "run_exactly(", ".submit(", "provider.get_device")
 
 
@@ -95,6 +99,8 @@ def static_checks(path):
     if not any("QUEST_JOB_TAGS = " in code_of(c) for c in nb["cells"] if c["cell_type"] == "code"):
         errors.append("QUEST_JOB_TAGS is never defined")
     for i, c in enumerate(nb["cells"]):
+        for m in STALE_RE.finditer(code_of(c) if c["cell_type"] == "markdown" else ""):
+            errors.append(f"cell {i}: stale reference {m.group(0)!r}")
         if c["cell_type"] == "markdown":
             for link in re.findall(r"\]\(([^)#\s]+)\)", code_of(c)):
                 if not link.startswith(("http", "mailto")) and not (path.parent / link).exists():
@@ -104,11 +110,13 @@ def static_checks(path):
 
 def doc_links():
     errors = []
-    for name in ("README.md", "NOTEBOOK_DETAILS.md", "RESOURCES.md"):
+    for name in ("README.md", "NOTEBOOK_DETAILS.md", "RESOURCES.md", "requirements/core.txt", "requirements/chem.txt"):
         p = ROOT / name
         if not p.exists():
             errors.append(f"{name} missing")
             continue
+        for m in STALE_RE.finditer(p.read_text()):
+            errors.append(f"{name}: stale reference {m.group(0)!r}")
         for link in re.findall(r"\]\(([^)#\s]+)\)", p.read_text()):
             if not link.startswith(("http", "mailto")) and not (ROOT / link).exists():
                 errors.append(f"{name}: broken link {link}")
@@ -164,7 +172,7 @@ def main():
             print(f"         {e}")
     errs = doc_links()
     failed += bool(errs)
-    print(f"  {'ok  ' if not errs else 'FAIL'} links in README.md, NOTEBOOK_DETAILS.md, RESOURCES.md")
+    print(f"  {'ok  ' if not errs else 'FAIL'} links and references in README.md, NOTEBOOK_DETAILS.md, RESOURCES.md, requirements")
     for e in errs:
         print(f"         {e}")
 

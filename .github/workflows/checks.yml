@@ -1,0 +1,19 @@
+name: Notebook checks
+
+# Structure, tags, links and stale references in every notebook. Uses only the
+# Python standard library, needs no hardware, credits or API key, and runs in seconds.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tests/check_notebooks.py --static

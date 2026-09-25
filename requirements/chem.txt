@@ -1,11 +1,11 @@
 # QUEST chemistry environment
 #
 # Everything in core, plus the classical quantum chemistry stack that only
-# nb3 (VQE for H2) needs. These are the heaviest dependencies in the repository
+# the VQE notebook (chemistry_and_physics/advanced_01_vqe_h2_ground_state) needs. These are the heaviest dependencies in the repository
 # and the most likely to fail to install, which is exactly why they are not in core.
 #
 # openfermionpyscf is a SEPARATE package from openfermion. Missing it is the most
-# common way to get a ModuleNotFoundError partway through nb3.
+# common way to get a ModuleNotFoundError partway through the VQE notebook.
 
 -r core.txt
 

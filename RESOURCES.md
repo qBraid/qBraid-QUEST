@@ -74,7 +74,7 @@ lab session on its own.
 - **[IBM · Basics of quantum information](https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information)**: *Intro.* States, measurement, circuits, entanglement. The cleanest free treatment of the
   formalism, written by IBM's own team.
 - **[IBM · Fundamentals of quantum algorithms](https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms)**: *Intermediate.* Where quantum algorithms beat classical ones, including factoring and
-  search. The natural companion to nb1 and nb2.
+  search. The natural companion to the [Grover notebook](algorithms/intermediate_01_grover_on_real_devices.ipynb) and the [phase estimation notebook](algorithms/intermediate_02_phase_estimation_precision_vs_noise.ipynb).
 - **[PennyLane Codebook · Introduction to Quantum Computing](https://pennylane.ai/codebook/introduction-to-quantum-computing)**: *Intro.* Codercises rather than reading. See also the
   [Foundations learning path](https://pennylane.ai/codebook/learning-paths/foundations-of-quantum-computing).
 - **[Qiskit Global Summer School lectures](https://www.youtube.com/playlist?list=PLOFEBzvs-Vvo5o97bYt8o1l8Ra1poMASQ)**: *Intermediate.* Recorded lecture series, free, by working researchers. Useful as
@@ -88,7 +88,7 @@ lab session on its own.
 - **[PennyLane · Intro to QSVT](https://pennylane.ai/demos/tutorial_intro_qsvt)**: *Intermediate to Advanced.* Quantum singular value transformation: the construction that
   puts Grover, amplitude amplification, Hamiltonian simulation and matrix inversion under a
   single framework. Increasingly the way modern algorithms are presented, and the natural
-  step beyond nb1 and nb2. See also
+  step beyond the [Grover notebook](algorithms/intermediate_01_grover_on_real_devices.ipynb) and the [phase estimation notebook](algorithms/intermediate_02_phase_estimation_precision_vs_noise.ipynb). See also
   [how to implement QSVT on hardware](https://pennylane.ai/qml/demos/tutorial_qsvt_hardware).
 
 **Reference**
@@ -106,14 +106,14 @@ lab session on its own.
 **Tutorials**
 
 - **[PennyLane · quantum chemistry demos](https://pennylane.ai/search/?contentType=DEMO&categories=quantum%20chemistry)**: *Intermediate.* The deepest free collection of quantum chemistry tutorials anywhere, and
-  the differentiable approach contrasts usefully with nb3's explicit-gradient treatment.
+  the differentiable approach contrasts usefully with the explicit-gradient treatment in the [VQE notebook](chemistry_and_physics/advanced_01_vqe_h2_ground_state.ipynb).
 - **[QuTiP tutorials](https://qutip.org/qutip-tutorials/)**: *Intermediate to Advanced.*
-  Open quantum systems, master equations and dynamics. Covers the dissipative side that nb4
+  Open quantum systems, master equations and dynamics. Covers the dissipative side that the [Ising quench notebook](chemistry_and_physics/advanced_02_ising_quench_dynamics.ipynb)
   deliberately leaves out, and is the right tool when the question is physics rather than
   circuits.
 
 - **[PennyLane · Intro to QSVT](https://pennylane.ai/demos/tutorial_intro_qsvt)**: *Advanced.* The modern route to Hamiltonian simulation and the successor to the
-  Trotterisation nb4 uses. Listed here for that application, but the framework is more
+  Trotterisation the [Ising quench notebook](chemistry_and_physics/advanced_02_ising_quench_dynamics.ipynb) uses. Listed here for that application, but the framework is more
   fundamental than any one use of it, so it is cross-listed under Foundations as well.
 
 **Papers worth assigning**
@@ -125,7 +125,7 @@ lab session on its own.
 
 **Tools**
 
-- **[PySCF](https://pyscf.org/)**: *Tool.* The classical quantum chemistry package nb3 uses
+- **[PySCF](https://pyscf.org/)**: *Tool.* The classical quantum chemistry package the [VQE notebook](chemistry_and_physics/advanced_01_vqe_h2_ground_state.ipynb) uses
   for its integrals. Worth an hour on its own, since students often meet the chemistry side
   for the first time here.
 - **[OpenFermion](https://quantumai.google/openfermion)**: *Tool.* Fermion-to-qubit mappings
@@ -140,18 +140,18 @@ lab session on its own.
 - **[PennyLane · Quantum Machine Learning](https://pennylane.ai/quantum-machine-learning)**: *Intermediate.* The reference collection for this area, and the
   [QML demo index](https://pennylane.ai/search/?contentType=DEMO&categories=quantum%20machine%20learning)
   covers far more ground than any course does.
-- **[NVIDIA CUDA-Q Academic · QAOA for Max-Cut](https://github.com/NVIDIA/cuda-q-academic/tree/main/qaoa-for-max-cut)**: *Intermediate.* A complete pathway on exactly the problem nb6 treats, from a different
-  angle and in a different framework. The natural next step after nb6.
-- **[PennyLane · barren plateaus demo](https://pennylane.ai/demos/tutorial_barren_plateaus/)**: *Intermediate.* Hands-on version of the diagnostic nb5 runs.
+- **[NVIDIA CUDA-Q Academic · QAOA for Max-Cut](https://github.com/NVIDIA/cuda-q-academic/tree/main/qaoa-for-max-cut)**: *Intermediate.* A complete pathway on exactly the problem the [QAOA notebook](machine_learning_and_optimization/advanced_01_qaoa_maxcut.ipynb) treats, from a different
+  angle and in a different framework. The natural next step after the [QAOA notebook](machine_learning_and_optimization/advanced_01_qaoa_maxcut.ipynb).
+- **[PennyLane · barren plateaus demo](https://pennylane.ai/demos/tutorial_barren_plateaus/)**: *Intermediate.* Hands-on version of the diagnostic the [variational classifier notebook](machine_learning_and_optimization/intermediate_01_variational_classifier_iris.ipynb) runs.
 
 **Papers worth assigning**
 
 - **[Cerezo et al., *Variational Quantum Algorithms*](https://arxiv.org/abs/2012.09265)**: *Intermediate to Advanced.* Nat. Rev. Phys. 3, 625 (2021). The orienting review for
-  everything variational, covering nb3, nb5 and nb6 at once.
+  everything variational, covering the [VQE notebook](chemistry_and_physics/advanced_01_vqe_h2_ground_state.ipynb), the [variational classifier notebook](machine_learning_and_optimization/intermediate_01_variational_classifier_iris.ipynb) and the [QAOA notebook](machine_learning_and_optimization/advanced_01_qaoa_maxcut.ipynb) at once.
 - **[McClean et al., *Barren plateaus in quantum neural network training landscapes*](https://arxiv.org/abs/1803.11173)**: *Intermediate.* Nat. Commun. 9, 4812 (2018). Short, and it reframes QML from "does it
-  work" to "can it be trained at all". Pairs directly with nb5's diagnostic.
+  work" to "can it be trained at all". Pairs directly with the diagnostic in the [variational classifier notebook](machine_learning_and_optimization/intermediate_01_variational_classifier_iris.ipynb).
 - **[Havlíček et al., *Supervised learning with quantum enhanced feature spaces*](https://arxiv.org/abs/1804.11326)**: *Intermediate.* Nature 567, 209 (2019). The origin of the variational classifier and
-  quantum kernel methods nb5 builds on.
+  quantum kernel methods the [variational classifier notebook](machine_learning_and_optimization/intermediate_01_variational_classifier_iris.ipynb) builds on.
 
 ---
 
@@ -179,8 +179,8 @@ lab session on its own.
 **On reading factoring claims critically**
 
 - **[Smolin, Smith & Vargo, *Oversimplifying quantum factoring*](https://arxiv.org/abs/1301.7007)**: *Intermediate.* Nature 499, 163 (2013). Two coherent qubits suffice to "factor" any
-  product of two distinct odd primes if you already know the period. The argument nb8
-  reconstructs in code.
+  product of two distinct odd primes if you already know the period. The [Shor notebook](cryptography_and_security/intermediate_02_shor_factoring_15.ipynb)
+  reconstructs this argument in code.
 
 **Tools**
 
@@ -193,16 +193,16 @@ lab session on its own.
 
 ## 5. Systems, Hardware and Engineering
 
-**Primary sources behind nb9 and nb10**
+**Primary sources behind the [benchmarking notebook](noise_and_hardware/advanced_01_device_benchmarking.ipynb) and the [compiler notebook](noise_and_hardware/advanced_02_improving_the_compiler.ipynb)**
 
-- **[Proctor et al., *Measuring the capabilities of quantum computers*](https://arxiv.org/abs/2008.11294)**: *Advanced.* Nat. Phys. 18, 75 (2022). The mirror-circuit method nb9 implements, applied
+- **[Proctor et al., *Measuring the capabilities of quantum computers*](https://arxiv.org/abs/2008.11294)**: *Advanced.* Nat. Phys. 18, 75 (2022). The mirror-circuit method the [benchmarking notebook](noise_and_hardware/advanced_01_device_benchmarking.ipynb) implements, applied
   to twelve publicly available processors.
 - **[Proctor et al., *Scalable randomized benchmarking using mirror circuits*](https://arxiv.org/abs/2112.09853)**: *Advanced.* Phys. Rev. Lett. 129, 150502 (2022). The follow-up that makes the method a
   benchmark rather than a demonstration.
 
 **Compilation**
 
-- **[Qiskit transpiler guide](https://quantum.cloud.ibm.com/docs/en/guides/transpile)**: *Reference.* Stage-by-stage documentation of the pipeline nb10 takes apart.
+- **[Qiskit transpiler guide](https://quantum.cloud.ibm.com/docs/en/guides/transpile)**: *Reference.* Stage-by-stage documentation of the pipeline the [compiler notebook](noise_and_hardware/advanced_02_improving_the_compiler.ipynb) takes apart.
 - **[pytket user guide](https://docs.quantinuum.com/tket/user-guide/)**: *Intermediate.* A
   second compiler with a different optimisation model. Compiling the same circuit through
   both is a good assignment: the differences are the lesson.
@@ -219,7 +219,7 @@ lab session on its own.
   [technology overview](https://www.ionq.com/resources/overview-of-quantum-computing-technologies): *Intro to Intermediate.* Trapped-ion architecture from the people building it. Useful
   context for why all-to-all connectivity changes compilation.
 - **[IBM · Quantum computing in practice](https://quantum.cloud.ibm.com/learning/en/courses/quantum-computing-in-practice)**: *Intermediate.* Working with 100+ qubit devices, which is the regime where the concerns
-  in nb9 and nb10 stop being optional.
+  in the [benchmarking notebook](noise_and_hardware/advanced_01_device_benchmarking.ipynb) and the [compiler notebook](noise_and_hardware/advanced_02_improving_the_compiler.ipynb) stop being optional.
 
 ---
 

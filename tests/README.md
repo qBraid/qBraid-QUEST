@@ -13,4 +13,4 @@ python tests/check_notebooks.py algorithms # one folder
 
 **Execution:** each notebook runs top to bottom in a fresh namespace and stops at its first hardware cell. The introductory notebooks keep `RUN_ON_HARDWARE = False`, so they run completely.
 
-Hardware behaviour is not tested here: that costs credits and is run by hand before each release. This script is meant to become the first stage of continuous integration.
+The static checks run on every push through `.github/workflows/checks.yml`. Hardware behaviour is not tested here: that costs credits and is run by hand before each release.
