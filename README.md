@@ -1,44 +1,25 @@
-# qBraid QUEST
+# qBraid QUEST notebooks
 
-**Quantum University Education & Support Track**
+Hands-on quantum computing notebooks that run on real quantum hardware through qBraid.
 
-Hands-on quantum computing material that runs on real quantum processors.
+These notebooks come with the QUEST program (Quantum University Education and Support Track), which gives university courses access to the qBraid platform, real quantum devices, and credits to run on them. They are an optional resource for your existing course. Use any of them as they are, or copy, cut and adapt them to fit your syllabus.
 
-QUEST gives university courses free access to the qBraid platform: 25+ QPUs from multiple
-vendors behind one interface, and a hosted notebook environment with nothing to install.
-This repository is the teaching material that comes with it: ten notebooks written for the
-program, a set of qBraid tutorial series, and a curated map of the best openly available
-material from across the field.
+Every notebook follows the same pattern: build a circuit, run it on an ideal simulator, run the same circuit on a real device, and compare the two. The gap between the ideal and the measured result is usually the lesson.
 
-Every notebook runs a real algorithm on real hardware and measures the distance between the
-textbook answer and what the device actually returns. That distance is the lesson.
+There are two sets:
 
----
+- **Starter notebooks** (8): short, introductory, and designed to work well on today's hardware. Most use one hardware job.
+- **Intermediate and advanced notebooks** (10): longer notebooks on algorithms, chemistry, machine learning, cryptography and systems, for upper-level and graduate courses.
 
-## Start here
-
-| If you are teaching or taking… | Go to | Open first |
-|---|---|---|
-| Introduction to quantum computing, QIS | [Foundations and Algorithms](#1-foundations-and-algorithms) | nb1 · Grover |
-| Quantum algorithms | [Foundations and Algorithms](#1-foundations-and-algorithms) | nb2 · Phase estimation |
-| Quantum chemistry, quantum simulation | [Chemistry and Physics](#2-chemistry-and-physics) | nb3 · VQE for H₂ |
-| Many-body or condensed matter physics | [Chemistry and Physics](#2-chemistry-and-physics) | nb4 · Quench dynamics |
-| Quantum machine learning | [Quantum Machine Learning](#3-quantum-machine-learning) | nb5 · Variational classifier |
-| Combinatorial optimization | [Quantum Machine Learning](#3-quantum-machine-learning) | nb6 · QAOA |
-| Quantum cryptography, PQC, security | [Cryptography and Security](#4-cryptography-and-security) | nb7 · BB84 |
-| Hardware, devices, architecture | [Systems, Hardware and Engineering](#5-systems-hardware-and-engineering) | nb9 · Benchmarking |
-| Error correction, fault tolerance | [Error Correction and Fault Tolerance](#6-error-correction-and-fault-tolerance) | Steane code and hook errors |
-
-**Just want to see one?** [nb1 · Grover's search on three QPUs](notebooks/quest_nb1_grover_three_qpus.ipynb)
-is the shortest path to the idea behind all of them.
+A longer list of external material, organised by topic, is in [RESOURCES.md](RESOURCES.md).
 
 ---
 
-## Running it
+## Quick start
 
-**On qBraid.** Nothing to install. Open a notebook, select the `Python 3 [Default]` kernel,
-and run. Simulator cells are free; hardware cells use credits, which QUEST courses receive
-as part of the program.
+**On qBraid Lab.** Open a notebook and run it from the top. Each notebook has a **Settings** cell (starters) or a **Setup** cell (intermediate and advanced) where you choose the device and the number of shots. Before any job is submitted, the notebook prints the device status and an estimated cost.
+
+In the starter notebooks, nothing is sent to hardware until you set `RUN_ON_HARDWARE = True`. In the intermediate and advanced notebooks, hardware jobs are submitted when their hardware cells run.
 
 **Locally.**
 
@@ -48,240 +29,101 @@ cd qBraid-QUEST
 pip install -r requirements/core.txt
 ```
 
-That covers nine of the ten notebooks. Only
-[nb3](notebooks/quest_nb3_vqe_h2_full_pipeline.ipynb) needs more:
+The VQE notebook (`quest_nb3`) also needs the chemistry packages:
 
 ```bash
 pip install -r requirements/chem.txt
 ```
 
-`chem.txt` includes everything in `core.txt` and adds the classical chemistry stack on top.
-Note that `openfermionpyscf` is a separate package from `openfermion` and is easy to miss.
-
-Tested against qiskit 2.5.2, qiskit-aer 0.17.2, qbraid 0.12.2.
+Running on hardware from your own machine needs a qBraid API key. Tested with qiskit 2.5.2, qiskit-aer 0.17.2 and qbraid 0.12.2.
 
 ---
 
-## How the material connects
+## Devices and costs
 
-Arrows mean one piece genuinely builds on another. Within an area, work in the order shown.
+Prices are in qBraid credits (100 credits = $1), as published on 25 September 2026. Device availability and prices change; each notebook checks the current status and price before submitting.
 
-```mermaid
-flowchart LR
-  subgraph FA["1 · Foundations and Algorithms"]
-    n1["nb1 Grover on three QPUs"]
-    n2["nb2 Phase estimation to NISQ"]
-  end
-  subgraph CP["2 · Chemistry and Physics"]
-    n3["nb3 VQE for H2"]
-    n4["nb4 Quench dynamics"]
-  end
-  subgraph QM["3 · Quantum Machine Learning"]
-    n5["nb5 Variational classifier"]
-    n6["nb6 QAOA for Max-Cut"]
-  end
-  subgraph CS["4 · Cryptography and Security"]
-    n7["nb7 BB84 and the QBER"]
-    n8["nb8 Shor, RSA, resource estimates"]
-  end
-  subgraph HC["5 · Systems, Hardware and Engineering"]
-    n9["nb9 Benchmarking and qubit choice"]
-    n10["nb10 Beating the default compiler"]
-  end
-  subgraph EC["6 · Error Correction and Fault Tolerance"]
-    t1["Steane code and hook errors"]
-    t2["Clifford Noise Reduction"]
-  end
+| Device | qBraid ID | Type | Qubits | Cost of one job | Notes |
+|---|---|---|---|---|---|
+| Rigetti Cepheus-1-108Q | `rigetti:rigetti:qpu:cepheus-1-108q` | Superconducting | 107 | Billed by execution time: 12,000 credits per minute of device time. Small jobs cost about 10 credits in our tests. | Cheapest option. In our tests it handled about 20 to 30 two-qubit gates in a general circuit before results became noise. |
+| IQM Garnet | `aws:iqm:qpu:garnet` | Superconducting | 20 | 30 per job + 0.145 per shot: about 45 credits at 100 shots, 175 at 1,000 | Reliable and fast in our tests. |
+| AQT IBEX Q1 | `aws:aqt:qpu:ibex-q1` | Trapped ion | 12 | 30 per job + 2.35 per shot: about 265 credits at 100 shots | Every qubit connects to every other. Runs in scheduled windows, so it is often unavailable. |
+| IonQ Forte Enterprise 1 | `aws:ionq:qpu:forte-enterprise-1` | Trapped ion | 36 | 30 per job + 8 per shot: about 830 credits at 100 shots | Minimum of 100 shots per job. Best used as a single instructor demonstration. |
+| IBM Quantum devices | through your own IBM account | Superconducting | 120 to 156 | Uses your IBM allocation, not qBraid credits | Starter 8 shows how to run on IBM from qBraid Lab. |
 
-  n1 --> n2
-  n2 --> n3
-  n2 --> n8
-  n1 --> n10
-  n6 --> n10
-  n7 --> n9
-  n9 --> n10
-  n10 --> t2
-  t1 --> t2
-```
+Simulators are free.
+
+**Credits for your course** are held by your course's organization on qBraid. Transfer credits to each student's account before they run hardware jobs; until then, students see a balance of zero.
 
 ---
 
-## The six areas
+## Starter notebooks
 
-Each area is a path. Numbered rows are the recommended order; `+` rows are companion
-material you can take at any point.
+Introductory notebooks, each designed to give a clear result on current hardware. Costs are for one run at the notebook's default settings.
 
-### 1. Foundations and Algorithms
+| | Notebook | What students do | Default device | Qubits | Two-qubit gates | Cost of one run |
+|---|---|---|---|---|---|---|
+| 1 | [Does the machine lie? Measuring readout error](starter_01_readout_error.ipynb) | Prepare known states and count how often the device reports the wrong bit | Rigetti Cepheus | 8 | 0 | about 10 credits |
+| 2 | [Rotating a qubit](starter_02_rotation_sweep.ipynb) | Sweep a rotation angle and fit the measured curve's contrast | IQM Garnet | 9 | 0 | about 103 credits |
+| 3 | [Measuring in different bases](starter_03_measurement_bases.ipynb) | Measure three states in three bases; see why one measurement cannot reveal a whole state | IQM Garnet | 9 | 0 | about 103 credits |
+| 4 | [Interference and the phase you cannot see](starter_04_interference.ipynb) | Measure a one-qubit interference fringe and its visibility | IQM Garnet | 12 | 0 | about 103 credits |
+| 5 | [Noise on real hardware](starter_05_noise_on_hardware.ipynb) | Simulate readout error, gate error and decoherence, then match a device to one of them | Rigetti Cepheus | 4 | 6 to 48 | about 40 credits |
+| 6 | [Deutsch-Jozsa and Bernstein-Vazirani](starter_06_deutsch_jozsa_bernstein_vazirani.ipynb) | Answer a question about a hidden function with one query | Rigetti Cepheus | 4 | 0 to 3 | about 30 credits |
+| 7 | [Grover's search on three qubits](starter_07_grover_three_qubits.ipynb) | Find a marked item among 8, and see what happens with a second iteration | IQM Garnet | 3 | about 12 to 19 | about 103 credits |
+| 8 | [Quantum phase estimation, on qBraid and on IBM](starter_08_phase_estimation_ibm.ipynb) | Estimate a phase on a qBraid device, and optionally on an IBM device with your own account | IQM Garnet | 4 | about 15 to 20 | about 103 credits |
 
-*Introductory and intermediate courses in quantum computing and quantum information.*
-
-| | Material | |
-|---|---|---|
-| **1** | [**nb1** · Grover's search on three QPUs](notebooks/quest_nb1_grover_three_qpus.ipynb) | The same circuit becomes three different circuits on three vendors. Transpiled depth predicts the outcome better than the query count does. |
-| **2** | [**nb2** · Phase estimation, textbook to NISQ](notebooks/quest_nb2_qpe_textbook_to_nisq.ipynb) | QPE with zero-noise extrapolation. The engine inside Shor's algorithm and quantum chemistry, so it feeds two later areas. |
-| **+** | [IEEE QCE23 workshop](tutorials/IEEE_QCE23_qBraid_Tutorial) | Two sessions with exercises *and worked solutions*. The closest thing here to a drop-in lab sequence. |
-| **+** | [qBraid Lab demos](qbraid-lab-demo) | The platform itself: runtime, job submission, and reaching Bloqade, Pasqal, AWS and IBM devices through one interface. |
-
-**Further reading**
-
-- **[IBM · Basics of quantum information](https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information)** — *Intro.* States, measurement, circuits, entanglement. The cleanest free treatment of the formalism.
-- **[IBM · Fundamentals of quantum algorithms](https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms)** — *Intermediate.* Where quantum algorithms beat classical ones. The natural companion to nb1 and nb2.
-- **[PennyLane Codebook](https://pennylane.ai/codebook/introduction-to-quantum-computing)** — *Intro.* Codercises rather than reading, entirely in the browser. Best option when students have no working Python environment. See also the [Foundations learning path](https://pennylane.ai/codebook/learning-paths/foundations-of-quantum-computing).
-- **[PennyLane · Intro to QSVT](https://pennylane.ai/demos/tutorial_intro_qsvt)** — *Intermediate to Advanced.* Quantum singular value transformation: the construction that puts Grover, amplitude amplification, Hamiltonian simulation and matrix inversion under one roof. Increasingly how modern algorithms are presented. See also [QSVT on hardware](https://pennylane.ai/qml/demos/tutorial_qsvt_hardware).
-- **[Wong, *Introduction to Classical and Quantum Computing*](https://www.thomaswong.net/introduction-to-classical-and-quantum-computing.pdf)** — *Intro.* Free PDF, assumes only trigonometry and builds the linear algebra it needs.
-- **[de Wolf, *Lecture Notes*](https://arxiv.org/abs/1907.09415)** — *Intermediate to Advanced.* The best free text for a theory-leaning course; the Grover and Shor chapters are assignable as-is.
-- **[Preskill, Ph219/CS219](https://www.preskill.caltech.edu/ph219/)** — *Advanced.* The standard graduate reference.
-- **[Qiskit Global Summer School](https://www.youtube.com/playlist?list=PLOFEBzvs-Vvo5o97bYt8o1l8Ra1poMASQ)** — *Intermediate.* Recorded lectures by working researchers; a useful second voice on hard topics.
-- **[IonQ · Introduction to Quantum Programming](https://ionq.com/resources/anthology/lecture-series-introduction-to-quantum-programming)** — *Intro.* Four-part lecture series from IonQ scientists; their [resource center](https://ionq.com/resources) also carries a series on how trapped ions actually compute.
-
-### 2. Chemistry and Physics
-
-*Quantum simulation, computational chemistry, many-body and condensed matter physics.*
-
-| | Material | |
-|---|---|---|
-| **1** | [**nb3** · VQE for H₂, molecule to ground state](notebooks/quest_nb3_vqe_h2_full_pipeline.ipynb) | The full pipeline: PySCF integrals, Jordan-Wigner mapping, hardware-efficient ansatz, potential energy surface against full CI. Most tutorials hand you a Hamiltonian and skip the chemistry. |
-| **2** | [**nb4** · Quench dynamics of the transverse-field Ising model](notebooks/quest_nb4_tfim_quench_dynamics.ipynb) | Trotterised evolution against exact diagonalisation. A real many-body calculation of the kind that appears in current research. |
-| **+** | [IEEE QCE25 · Quantum chemistry on quantum computers](tutorials/IEEE_QCE25_QC_on_QC_Tutorial) | A two-session tutorial: fermion-to-qubit mappings first, then VQE with graded exercises, closing on active research directions and the role of noise. Works well *before* nb3, or after it as reinforcement. |
-| **+** | [Generalized Superfast Encoding](tutorials/Generalized-Superfast-Encoding) | A mapping that beats Jordan-Wigner on operator weight and doubles as a stabilizer code — a bridge into area 6. |
-| **+** | [Q-Cliff](tutorials/Q-Cliff) | Clifford-frame ansatz builder with worked VQE for LiH and H₄. Extends nb3's ansatz discussion directly. |
-
-**Further reading**
-
-- **[PennyLane · quantum chemistry demos](https://pennylane.ai/search/?contentType=DEMO&categories=quantum%20chemistry)** — *Intermediate.* The deepest free collection in this area; the differentiable approach contrasts usefully with nb3.
-- **[QuTiP tutorials](https://qutip.org/qutip-tutorials/)** — *Intermediate to Advanced.* Open quantum systems and master equations — the dissipative side nb4 deliberately leaves out.
-- **[McArdle et al., *Quantum computational chemistry*](https://arxiv.org/abs/1808.10402)** — *Advanced.* Rev. Mod. Phys. 92, 015003 (2020). The best single review bridging the two fields; assign sections.
-- **[Cao et al., *Quantum Chemistry in the Age of Quantum Computing*](https://arxiv.org/abs/1812.09976)** — *Advanced.* Chem. Rev. 119, 10856 (2019). 194 pages; a reference work, not a reading assignment.
-- **[PennyLane · Intro to QSVT](https://pennylane.ai/demos/tutorial_intro_qsvt)** — *Advanced.* The modern route to Hamiltonian simulation, and the successor to the Trotterisation nb4 uses. Listed here for that application, but the framework is more fundamental than any single use of it; also cross-listed under Foundations.
-- **[PySCF](https://pyscf.org/)** — *Tool.* The classical package nb3 uses for its integrals. Worth an hour on its own.
-- **[OpenFermion](https://quantumai.google/openfermion)** — *Tool.* Fermion-to-qubit mappings and Hamiltonian manipulation.
-
-### 3. Quantum Machine Learning
-
-*QML, variational algorithms, and combinatorial optimization.*
-
-| | Material | |
-|---|---|---|
-| **1** | [**nb5** · Variational quantum classifier on real data](notebooks/quest_nb5_vqc_iris.ipynb) | Iris, not a synthetic toy set — benchmarked against logistic regression, with a barren-plateau diagnostic. The classical baseline is hard to beat, and students should see that. |
-| **2** | [**nb6** · QAOA for Max-Cut](notebooks/quest_nb6_qaoa_maxcut.ipynb) | Parameter landscape, warm starts, and a comparison against Goemans-Williamson. The classical approximation algorithm is the honest baseline, and it is a strong one. |
-| **+** | [Quantum Reservoir Computing](tutorials/Quantum-Reservoir-Computing) | Hybrid classical/quantum reservoirs for time-series prediction, GPU-accelerated on qBraid. Covers temporal data, which neither notebook does. |
-
-**Further reading**
-
-- **[PennyLane · Quantum Machine Learning](https://pennylane.ai/quantum-machine-learning)** — *Intermediate.* The reference collection for this area; the [demo index](https://pennylane.ai/search/?contentType=DEMO&categories=quantum%20machine%20learning) covers far more ground than any single course.
-- **[PennyLane · barren plateaus demo](https://pennylane.ai/demos/tutorial_barren_plateaus/)** — *Intermediate.* Hands-on version of the diagnostic nb5 runs.
-- **[NVIDIA CUDA-Q Academic · QAOA for Max-Cut](https://github.com/NVIDIA/cuda-q-academic/tree/main/qaoa-for-max-cut)** — *Intermediate.* A complete pathway on exactly nb6's problem, in a different framework. The natural next step.
-- **[CUDA-Q learning pathways](https://nvidia.github.io/cuda-q-academic/learningpath.html)** — *Intro to Advanced.* Self-paced modules mapped to course levels.
-- **[Cerezo et al., *Variational Quantum Algorithms*](https://arxiv.org/abs/2012.09265)** — *Intermediate to Advanced.* Nat. Rev. Phys. 3, 625 (2021). Orients nb3, nb5 and nb6 at once.
-- **[McClean et al., *Barren plateaus*](https://arxiv.org/abs/1803.11173)** — *Intermediate.* Nat. Commun. 9, 4812 (2018). Short, and it reframes QML from "does it work" to "can it be trained".
-- **[Havlíček et al., *Supervised learning with quantum enhanced feature spaces*](https://arxiv.org/abs/1804.11326)** — *Intermediate.* Nature 567, 209 (2019). The origin of the classifier nb5 builds on.
-
-### 4. Cryptography and Security
-
-*Quantum cryptography, post-quantum cryptography, and security courses with a quantum unit.*
-
-| | Material | |
-|---|---|---|
-| **1** | [**nb7** · BB84: telling noise apart from an eavesdropper](notebooks/quest_nb7_bb84_qber_vs_eve.ipynb) | The protocol says abort above 11%. Run it on real processors with no eavesdropper present and watch devices cross that line on their own noise. From inside the protocol, hardware error and an eavesdropper are indistinguishable. |
-| **2** | [**nb8** · Shor's algorithm, RSA, and what factoring 15 proves](notebooks/quest_nb8_shor_rsa_reality.ipynb) | Three implementations: honest, instance-tuned, and the compiled kind published demonstrations use. The compiled one "factors" a 2048-bit RSA modulus with four qubits, provided you already know the answer. Ends on surface-code resource estimates and the NIST timetable. |
-
-**Further reading**
-
-- **[NIST · Post-Quantum Cryptography](https://www.nist.gov/pqc)** — *Reference.* FIPS 203/204/205 published 13 August 2024; [HQC selected March 2025](https://www.nist.gov/news-events/news/2025/03/nist-selects-hqc-fifth-algorithm-post-quantum-encryption); FN-DSA in draft as FIPS 206. See also the [standardization process history](https://csrc.nist.gov/projects/post-quantum-cryptography/post-quantum-cryptography-standardization).
-- **[NIST IR 8547 · Transition to PQC](https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8547.ipd.pdf)** — *Reference.* The migration timetable: RSA-2048 deprecated by 2030, disallowed after 2035.
-- **[Gidney & Ekerå (2019)](https://arxiv.org/abs/1905.09749)** and **[Gidney (2025)](https://arxiv.org/abs/2505.15917)** — *Advanced.* 20 million noisy qubits, then under 1 million for the same problem under identical hardware assumptions. Read as a pair, the clearest lesson available in how algorithmic progress moves a security deadline.
-- **[Smolin, Smith & Vargo, *Oversimplifying quantum factoring*](https://arxiv.org/abs/1301.7007)** — *Intermediate.* Nature 499, 163 (2013). The argument nb8 reconstructs in code.
-- **[Open Quantum Safe / liboqs](https://openquantumsafe.org/)** — *Tool.* Working implementations of the standardised algorithms, so students can run and measure ML-KEM rather than only read the standard. [Source](https://github.com/open-quantum-safe/liboqs).
-
-### 5. Systems, Hardware and Engineering
-
-*Hardware, devices and architecture, and any course where students run enough jobs to care
-about getting good results from them.*
-
-| | Material | |
-|---|---|---|
-| **1** | [**nb9** · Benchmarking a processor you cannot see inside](notebooks/quest_nb9_device_benchmarking.ipynb) | A unified interface will not hand you per-qubit calibration data, so measure it yourself with randomized mirror circuits — validated against a known injected error rate, then used to pick the best four qubits on a real device. |
-| **2** | [**nb10** · Beating the default compiler, measured](notebooks/quest_nb10_compilation_measured.ipynb) | Layout and routing are randomised, and the compiler will not reorder your commuting gates for you. Sweeping equivalent orderings costs seconds and reliably produces a smaller circuit — then we check whether the answer actually improves. |
-| **+** | [Error Mitigation series](tutorials/Error-Mitigation) | Four notebooks: the noise zoo, readout mitigation, zero-noise extrapolation, then the full ladder on real hardware. Built on mirror circuits, the same construction nb9 uses. |
-
-**Further reading**
-
-- **[Proctor et al., *Measuring the capabilities of quantum computers*](https://arxiv.org/abs/2008.11294)** — *Advanced.* Nat. Phys. 18, 75 (2022). The mirror-circuit method nb9 implements, applied to twelve real processors.
-- **[Proctor et al., *Scalable RB using mirror circuits*](https://arxiv.org/abs/2112.09853)** — *Advanced.* Phys. Rev. Lett. 129, 150502 (2022). The follow-up that makes it a benchmark rather than a demonstration.
-- **[Qiskit transpiler guide](https://quantum.cloud.ibm.com/docs/en/guides/transpile)** — *Reference.* Stage-by-stage documentation of the pipeline nb10 takes apart.
-- **[pytket user guide](https://docs.quantinuum.com/tket/user-guide/)** — *Intermediate.* A second compiler with a different optimisation model. Compiling one circuit through both is a good assignment.
-- **[Mitiq](https://mitiq.readthedocs.io)** — *Tool.* Framework-agnostic reference implementation of ZNE, PEC and readout mitigation.
-- **[IonQ documentation](https://docs.ionq.com/)** and their [technology overview](https://www.ionq.com/resources/overview-of-quantum-computing-technologies) — *Intro to Intermediate.* Trapped-ion architecture from the people building it; context for why all-to-all connectivity changes compilation.
-- **[IBM · Quantum computing in practice](https://quantum.cloud.ibm.com/learning/en/courses/quantum-computing-in-practice)** — *Intermediate.* The 100+ qubit regime, where nb9 and nb10's concerns stop being optional.
-
-### 6. Error Correction and Fault Tolerance
-
-*Quantum error correction, fault tolerance, and coding theory.*
-
-| | Material | |
-|---|---|---|
-| **1** | [Steane code and hook errors](tutorials/Shor-Style-Syndrome-Extraction) | Fault-tolerant syndrome extraction from first principles. A single ancilla fault spreads onto two data qubits, and a distance-3 code that corrects one error fails to correct it. Shor's cat-state extraction is the fix. |
-| **2** | [Clifford Noise Reduction](tutorials/Clifford-Noise-Reduction) | Four notebooks on CliNR, which sits between mitigation and full correction: prepare on separate qubits, verify with stabilizers, teleport in. Runs on real trapped-ion hardware, and is honest that it does not pay off below ten qubits. |
-| **+** | [Generalized Superfast Encoding](tutorials/Generalized-Superfast-Encoding) | A fermion-to-qubit mapping whose interaction-graph loops supply stabilizers, giving code distance and error detection. Where chemistry and coding theory meet. |
-
-**Further reading**
-
-- **[Roffe, *QEC: An Introductory Guide*](https://arxiv.org/abs/1907.11157)** — *Intermediate.* Contemp. Phys. 60, 226 (2019). The best modern entry point: stabilizer formalism from scratch, short enough to assign whole.
-- **[Devitt, Munro & Nemoto, *QEC for Beginners*](https://arxiv.org/abs/0905.2794)** — *Intermediate.* Rep. Prog. Phys. 76, 076001 (2013). Still one of the clearest treatments of fault tolerance as distinct from correction.
-- **[Preskill Ph219, Chapter 7](https://www.preskill.caltech.edu/ph219/)** — *Advanced.* The threshold theorem done properly.
-- **[Google Quantum AI, *QEC below the surface code threshold*](https://arxiv.org/abs/2408.13687)** — *Advanced.* Nature 638, 920 (2024). The first convincing demonstration that adding qubits makes a logical qubit better rather than worse. Worth assigning even to students who cannot follow every detail.
-- **[The Error Correction Zoo](https://errorcorrectionzoo.org)** — *Reference.* Searchable taxonomy of codes, and a good source of student project topics.
-- **[Stim](https://github.com/quantumlib/Stim)** — *Tool.* The standard fast stabilizer simulator; makes distance-7 experiments tractable on a laptop. Introduced in [arXiv:2103.02202](https://arxiv.org/abs/2103.02202).
-- **[PyMatching](https://github.com/oscarhiggott/PyMatching)** — *Tool.* Minimum-weight perfect matching decoder. Stim plus PyMatching is the standard pairing for a course project.
-- **[Sinter](https://github.com/quantumlib/Stim/tree/main/glue/sample)** — *Tool.* Parallel Monte Carlo sampling of QEC circuits, with the plotting needed for threshold plots.
+Starters 1 to 4 run every experiment on separate qubits of one circuit, so each is a single hardware job. Starter 5 is adapted from the qBraid Error-Mitigation series.
 
 ---
 
-## Material that spans every area
+## Intermediate and advanced notebooks
 
-Not tied to one subject, useful whatever you are teaching.
+Longer notebooks for upper-level undergraduate and graduate courses. Each opens with a table giving its level, prerequisites, devices, cost and notes from our hardware tests. Sections marked *Optional, advanced* can be skipped.
 
-- **[IBM Quantum Learning](https://quantum.cloud.ibm.com/learning/)** — the free course library that replaced the Qiskit Textbook when it was retired at the end of 2023. Start here rather than the archived textbook pages, which still surface in search results. [Full catalog](https://quantum.cloud.ibm.com/learning/en/courses).
-- **[PennyLane Codebook](https://pennylane.ai/codebook)** — exercise-driven, runs in the browser. The answer when students have no working Python environment.
-- **[Microsoft Quantum Katas](https://github.com/microsoft/QuantumKatas)** — exercises with an automated test harness, so students get feedback without you grading. Now [integrated into the QDK in VS Code](https://learn.microsoft.com/en-us/azure/quantum/katas-qdk-learning).
-- **[IQM Academy](https://www.iqmacademy.com/)** — free and interactive, pitched deliberately low. Good for a first week, a non-majors course, or outreach.
-- **[Q-CTRL Black Opal](https://q-ctrl.com/black-opal)** — visual and gamified, intuition before formalism. Strong for students who bounce off bra-ket notation on first contact.
+| Notebook | Topic | Level | Default devices | Cost of one run | Notes from our tests |
+|---|---|---|---|---|---|
+| [nb1](intermediate_advanced/quest_nb1_grover_three_qpus.ipynb) | Grover's search on real devices, and how each device's layout changes the circuit | Intermediate | Rigetti, Garnet | about 210 credits on Garnet, plus Rigetti | The 4-qubit circuit was too long for Rigetti; Garnet gave a clear result. Starter 7 works on both. |
+| [nb2](intermediate_advanced/quest_nb2_qpe_textbook_to_nisq.ipynb) | Quantum phase estimation: precision against noise; zero-noise extrapolation | Intermediate to advanced | Rigetti | about 70 credits | Hardware error 0.02 to 0.06, far above the simulator. The zero-noise extrapolation step gave near-random results on Rigetti. |
+| [nb3](intermediate_advanced/quest_nb3_vqe_h2_full_pipeline.ipynb) | VQE for H₂, from the molecule to the ground-state energy | Advanced | Garnet | about 890 credits | Needs the chemistry packages. |
+| [nb4](intermediate_advanced/quest_nb4_tfim_quench_dynamics.ipynb) | Quench dynamics of the transverse-field Ising model | Advanced | Garnet | about 820 credits | Hardware followed the exact result closely at early times. |
+| [nb5](intermediate_advanced/quest_nb5_vqc_iris.ipynb) | A variational classifier on the Iris dataset, against a classical baseline | Intermediate to advanced | Garnet | about 1,790 credits; lower the shots or test samples to reduce this | Garnet classified 7 of 10 samples correctly; Rigetti was at chance. |
+| [nb6](intermediate_advanced/quest_nb6_qaoa_maxcut.ipynb) | QAOA for Max-Cut: landscape, warm starts, classical comparison | Advanced | Garnet | about 320 credits | Above the random baseline on Garnet; at or below it on Rigetti. |
+| [nb7](intermediate_advanced/quest_nb7_bb84_qber_vs_eve.ipynb) | BB84: telling device noise apart from an eavesdropper | Intermediate | Rigetti, Garnet | about 1,050 credits on Garnet, plus Rigetti | Error rate 5% to 11% on Rigetti, rising with channel length at first; below 2% on Garnet. |
+| [nb8](intermediate_advanced/quest_nb8_shor_rsa_reality.ipynb) | Shor's algorithm, RSA, and what factoring 15 proves | Intermediate to advanced | Rigetti, Garnet | about 350 credits on Garnet, plus Rigetti | The compiled circuit beat random guessing on both devices (0.48 and 0.98 against 0.25); the full circuit did not. |
+| [nb9](intermediate_advanced/quest_nb9_device_benchmarking.ipynb) | Benchmarking a device with mirror circuits, and choosing its best qubits | Advanced | Rigetti, Garnet | about 820 credits on Garnet, plus Rigetti | On Rigetti the best four qubits gave a key error rate of 0.07 and the worst four 0.24. On Garnet all qubits scored alike. |
+| [nb10](intermediate_advanced/quest_nb10_compilation_measured.ipynb) | Improving on the default compiler, and measuring whether it helps | Advanced | Rigetti, Garnet | about 640 credits on Garnet, plus Rigetti | The reordered circuit scored slightly better on Rigetti and the same on Garnet. |
 
-**Frameworks worth showing beside Qiskit.** Concepts transfer between frameworks and syntax
-does not, so seeing a second one is worth a lab session on its own.
-[PennyLane](https://pennylane.ai/learn) (differentiable programming as the organising idea) ·
-[Cirq](https://quantumai.google/cirq) ([intro](https://quantumai.google/cirq/start/intro)) ·
-[pytket](https://docs.quantinuum.com/tket/user-guide/) (compiler-first) ·
-[Classiq](https://www.classiq.io/docs) (synthesis from functional models; [academic program](https://www.classiq.io/academia)) ·
-[CUDA-Q Academic](https://github.com/NVIDIA/cuda-q-academic) (modules built for university courses).
+Rigetti runs are billed by execution time and cost about 10 credits per job in our tests. The notebooks that compare devices can include AQT's trapped-ion device by uncommenting one line; it runs in scheduled windows and costs more per shot.
 
 ---
 
-## For instructors
+## Using these notebooks in your course
 
-**Every notebook follows the same shape**, so once you have read one you know where things
-are: learning objectives → prerequisites → **credit budget** → compact theory → ideal
-simulation → the same circuit on real hardware → the comparison, plotted and tabulated → an
-honest assessment of what the result does and does not show → open-ended exercises → three
-feedback questions.
+- **Adapt freely.** Delete sections, change parameters, or lift the "Questions to try" into an assignment. Grading stays in your own course system; each starter suggests what students could hand in.
+- **Check the cost for your class size before assigning.** A starter at about 100 credits per run costs about 3,000 credits for a class of 30. Lower `SHOTS` to reduce the cost on devices billed per shot.
+- **Queues vary.** A small job can return in seconds or wait more than an hour. For in-class use, submit before the session.
+- **Devices change.** If a device is offline, pick another in the Settings or Setup cell. AQT runs in scheduled windows.
+- **Notebooks are distributed without outputs,** so students open a clean copy.
 
-**Check the credit budget before committing a class.** Each notebook states its exact shot
-counts, backends and estimated cost up front. Simulator sections are free, and several
-notebooks are worth a simulator-only pass the first time through.
+---
 
-**Device IDs are illustrative and the fleet moves.** Every hardware cell carries an
-`# Instructor: replace with an available backend` note. Run `provider.get_devices()` before
-teaching and substitute.
+## Related qBraid tutorial series
 
-**Queue time is the real constraint, not credits.** A notebook submitting 18 jobs can take
-minutes or hours depending on load. Submit before class, analyse during it.
+These series are included in this repository as submodules under `tutorials/`.
 
-**Notebooks ship with outputs cleared**, so students open a clean notebook and a completed
-run produces a meaningful diff.
+| Series | What it covers |
+|---|---|
+| [Error-Mitigation](tutorials/Error-Mitigation) | Four notebooks: types of noise, readout mitigation, zero-noise extrapolation, and the full set on real hardware. Starter 5 is adapted from its first notebook. |
+| [Clifford Noise Reduction](tutorials/Clifford-Noise-Reduction) | CliNR, a method between error mitigation and full error correction, run on trapped-ion hardware. |
+| [Shor-Style Syndrome Extraction](tutorials/Shor-Style-Syndrome-Extraction) | Fault-tolerant syndrome extraction for the Steane code, from first principles. |
+| [Generalized Superfast Encoding](tutorials/Generalized-Superfast-Encoding) | A fermion-to-qubit mapping that also works as an error-detecting code. |
+| [Q-Cliff](tutorials/Q-Cliff) | Building Clifford-based ansätze, with worked VQE examples for LiH and H₄. |
+| [Quantum Reservoir Computing](tutorials/Quantum-Reservoir-Computing) | Hybrid classical and quantum reservoirs for time-series prediction. |
+| [IEEE QCE23 tutorial](tutorials/IEEE_QCE23_qBraid_Tutorial) | A two-session workshop with exercises and worked solutions. |
+| [IEEE QCE25 tutorial](tutorials/IEEE_QCE25_QC_on_QC_Tutorial) | Quantum chemistry on quantum computers: fermion-to-qubit mappings and VQE. |
+| [qBraid Lab demos](qbraid-lab-demo) | Using the platform: job submission, devices, and other SDKs through one interface. |
 
-**Levels.** The material spans undergraduate to PhD. The *Where to go next* section of each
-notebook carries the differentiation. Those sections work as extension problems for
-stronger students without changing the core notebook.
+For external material, from textbooks to other frameworks, see [RESOURCES.md](RESOURCES.md).
 
 ---
 
@@ -289,49 +131,27 @@ stronger students without changing the core notebook.
 
 ```
 qBraid-QUEST/
-├── README.md              this file
-├── notebooks/             the ten QUEST notebooks
-├── requirements/          core environment, plus the chemistry stack nb3 needs
-├── qbraid-lab-demo/       platform onboarding
-└── tutorials/             qBraid tutorial series, included as submodules
+├── README.md                  this file
+├── RESOURCES.md               curated external material, by topic
+├── starter_01 ... starter_08  the eight starter notebooks
+├── intermediate_advanced/     the ten intermediate and advanced notebooks
+├── requirements/              packages for all notebooks, plus the chemistry packages for nb3
+├── tutorials/                 qBraid tutorial series (submodules)
+└── qbraid-lab-demo/           platform demonstrations (submodule)
 ```
 
-Each notebook carries `metadata.qbraid` with a stable `notebook_id`, its `series` and a
-`version`, so material can be cited precisely in a syllabus.
+Each notebook carries a stable `notebook_id` and `version` in its metadata, so you can cite a specific version in a syllabus.
 
 ---
 
 ## Contributing
 
-We would like to include course material that other instructors have built and taught with,
-and that is not limited to notebooks. Syllabi, problem sets, lecture notes, lab handouts,
-slide decks, assessments and worked examples are all welcome.
+Corrections to physics, text, exercises or device settings are welcome as small pull requests.
 
-**Start with an issue** naming the course area and describing what you have. That step saves
-the most work, and it is where we agree where the material should live.
-
-**If what you have is runnable**, it should work on real hardware through qBraid, be honest
-about what the hardware does to the result, and teach something a simulator cannot. Clear
-outputs before committing, state the credit budget, and mark every hardware cell.
-
-**Corrections** to physics, prose, exercises or stale device IDs are welcome as small pull
-requests and need no prior discussion.
-
----
-
-## The pedagogy study
-
-QUEST includes an IRB-approved multi-university study on quantum computing pedagogy. Each
-notebook ends with three short questions, and the responses shape what gets built next.
-Participation is voluntary and takes about two minutes.
-
-If you teach with this material, the most useful thing you can send back is which notebook
-you used, at what level, and what your students found hardest.
+If you have course material you would like to share with other instructors, such as notebooks, problem sets, labs or syllabi, please open an issue describing it first, so we can agree where it fits.
 
 ---
 
 ## Attribution
 
-The QUEST notebooks are released for educational use. The submodules are separate
-repositories under their own licenses, so check each before redistributing. External material
-linked here belongs to its authors and is linked, never copied.
+The QUEST notebooks are released for educational use. The tutorial series under `tutorials/` and `qbraid-lab-demo/` are separate repositories under their own licenses; check each before redistributing. External material listed in RESOURCES.md belongs to its authors.

@@ -1,6 +1,6 @@
 # QUEST core environment
 #
-# Covers nb1, nb2, nb4, nb5, nb6, nb7, nb8, nb9, nb10 — nine of the ten notebooks.
+# Covers the eight starters and nb1, nb2, nb4, nb5, nb6, nb7, nb8, nb9, nb10.
 # Everything here installs from wheels; nothing needs a compiler.
 #
 # Only the versions under "Tested with" below have actually been verified. The lower
@@ -18,6 +18,7 @@ pandas>=2.0
 scikit-learn>=1.4        # nb5  variational classifier on Iris
 networkx>=3.2            # nb6  Max-Cut graphs, nb10 QAOA test case
 cvxpy>=1.5               # nb6  Goemans-Williamson SDP baseline
+qiskit-ibm-runtime>=0.40 # starter 8 optional IBM section (needs your own IBM account)
 
 # Tested with: qiskit 2.5.2, qiskit-aer 0.17.2, qbraid 0.12.2, numpy 2.5.2,
 #              scipy 1.18.1, matplotlib 3.11.1, pandas 3.0.5, scikit-learn 1.9.0,
