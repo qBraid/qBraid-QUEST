@@ -4,61 +4,40 @@ Hands-on quantum computing notebooks that run on real quantum hardware through q
 
 These notebooks come with the QUEST program (Quantum University Education and Support Track), which gives university courses access to the qBraid platform, real quantum devices, and credits to run on them. Use any of them as they are, or copy, cut and adapt them to fit your syllabus.
 
-Every notebook follows the same pattern: build a circuit, run it on an ideal simulator, run the same circuit on a real device, and compare the two. The gap between the ideal and the measured result is usually the lesson.
+## What is here
 
-**New to quantum computing?** Start with the four notebooks in [foundations](foundations/).
+18 Jupyter notebooks in six subject areas: foundations, algorithms, noise and hardware, chemistry and physics, machine learning and optimization, and cryptography and security. They range from introductory notebooks for a first course in quantum computing to advanced notebooks for graduate courses.
 
-## Notebooks
+Every notebook follows the same pattern: build a circuit, run it on an ideal simulator, run the same circuit on a real quantum device, and compare the two. The gap between the ideal and the measured result is usually the lesson. Each notebook states its level, prerequisites, devices and cost at the top, and ends with questions students can work on.
 
-Notebooks are grouped by subject. The prefix gives the level: `intro`, `intermediate` or `advanced`.
+New to quantum computing? Start with the four notebooks in [foundations](foundations/).
 
-**Foundations**
+## Repository layout
 
-| Notebook | Level | Students |
-|---|---|---|
-| [Measuring readout error](foundations/intro_01_measuring_readout_error.ipynb) | Introductory | prepare known states and count how often the device reports the wrong bit |
-| [Rotating a qubit](foundations/intro_02_rotating_a_qubit.ipynb) | Introductory | sweep a rotation angle and fit the measured curve |
-| [Measuring in different bases](foundations/intro_03_measurement_bases.ipynb) | Introductory | measure three states in three bases |
-| [Interference and phase](foundations/intro_04_interference_and_phase.ipynb) | Introductory | measure an interference fringe and its visibility |
+```
+qBraid-QUEST/
+├── README.md
+├── NOTEBOOK_DETAILS.md                  every notebook: level, device, cost, test results
+├── RESOURCES.md                         textbooks, courses and other external material
+├── foundations/                         measurement, rotations, bases, interference
+├── algorithms/                          Deutsch-Jozsa, Bernstein-Vazirani, Grover, phase estimation
+├── noise_and_hardware/                  noise, benchmarking, compilation
+├── chemistry_and_physics/               VQE for H2, Ising model dynamics
+├── machine_learning_and_optimization/   variational classifier, QAOA
+├── cryptography_and_security/           BB84, Shor's algorithm
+├── requirements/                        core.txt for all notebooks; chem.txt for the VQE notebook
+├── tests/                               checks that run without hardware or credits
+├── tutorials/                           longer qBraid tutorial series (submodules)
+└── qbraid-lab-demo/                     qBraid platform demonstrations (submodule)
+```
 
-**Algorithms**
+Each notebook's file name gives its level (`intro`, `intermediate` or `advanced`) and topic.
 
-| Notebook | Level | Students |
-|---|---|---|
-| [Deutsch-Jozsa and Bernstein-Vazirani](algorithms/intro_01_deutsch_jozsa_bernstein_vazirani.ipynb) | Introductory | answer a question about a hidden function with one query |
-| [Grover's search on three qubits](algorithms/intro_02_grover_search_three_qubits.ipynb) | Introductory | find a marked item among 8 |
-| [Phase estimation, on qBraid and IBM](algorithms/intro_03_phase_estimation_qbraid_and_ibm.ipynb) | Introductory | estimate a phase, optionally also on an IBM device |
-| [Grover's search on real devices](algorithms/intermediate_01_grover_on_real_devices.ipynb) | Intermediate | see how each device's layout changes the circuit |
-| [Phase estimation: precision against noise](algorithms/intermediate_02_phase_estimation_precision_vs_noise.ipynb) | Intermediate | trade precision against circuit size; try zero-noise extrapolation |
+## Where to find more
 
-**Noise and hardware**
-
-| Notebook | Level | Students |
-|---|---|---|
-| [Noise on real hardware](noise_and_hardware/intro_01_noise_on_real_hardware.ipynb) | Introductory | simulate three kinds of noise, then measure how a device degrades with depth |
-| [Benchmarking a device](noise_and_hardware/advanced_01_device_benchmarking.ipynb) | Advanced | benchmark with mirror circuits, rank qubits, and measure what the choice is worth |
-| [Improving on the compiler](noise_and_hardware/advanced_02_improving_the_compiler.ipynb) | Advanced | beat the default compilation and test whether it helps on hardware |
-
-**Chemistry and physics**
-
-| Notebook | Level | Students |
-|---|---|---|
-| [VQE for H₂](chemistry_and_physics/advanced_01_vqe_h2_ground_state.ipynb) | Advanced | go from a molecule to its ground-state energy |
-| [Ising quench dynamics](chemistry_and_physics/advanced_02_ising_quench_dynamics.ipynb) | Advanced | simulate the time evolution of a spin chain |
-
-**Machine learning and optimization**
-
-| Notebook | Level | Students |
-|---|---|---|
-| [Variational classifier on Iris](machine_learning_and_optimization/intermediate_01_variational_classifier_iris.ipynb) | Intermediate | train a quantum classifier and compare it with a classical one |
-| [QAOA for Max-Cut](machine_learning_and_optimization/advanced_01_qaoa_maxcut.ipynb) | Advanced | explore the landscape, warm starts and a classical comparison |
-
-**Cryptography and security**
-
-| Notebook | Level | Students |
-|---|---|---|
-| [BB84: noise or eavesdropper?](cryptography_and_security/intermediate_01_bb84_noise_vs_eavesdropper.ipynb) | Intermediate | measure how much of the key a device's own noise costs |
-| [Shor's algorithm and factoring 15](cryptography_and_security/intermediate_02_shor_factoring_15.ipynb) | Intermediate | see what factoring 15 on hardware does and does not prove |
+- **[Notebook details](NOTEBOOK_DETAILS.md):** the full list of notebooks with their devices, qubits, costs and results from our hardware tests; device prices; and advice on using the notebooks in a course.
+- **[Resources](RESOURCES.md):** textbooks, courses and other external material, by topic.
+- **[qBraid tutorial series](tutorials/):** longer tutorials on error mitigation, error correction, chemistry and more.
 
 ## Quick start
 
@@ -74,14 +53,12 @@ pip install -r requirements/core.txt      # add requirements/chem.txt for the VQ
 
 Running on hardware from your own machine needs a qBraid API key.
 
-## More information
-
-- **[Notebook details](NOTEBOOK_DETAILS.md):** devices and prices, each notebook's qubits, gates, cost and results from our hardware tests, and advice on using the notebooks in a course.
-- **[Resources](RESOURCES.md):** textbooks, courses and other external material, by topic.
-- **[qBraid tutorial series](tutorials/):** longer tutorials on error mitigation, error correction, chemistry and more, included as submodules.
-
 ## Contributing
 
-Corrections to physics, text, exercises or device settings are welcome as small pull requests. If you have course material to share with other instructors, please open an issue describing it first.
+**Found a mistake in the code or text, or a notebook that no longer runs?** Please open an issue with the notebook, the device, and what happened.
+
+**Have course material to share?** We would like this collection to grow with material from the instructors who use it. If you teach with QUEST, contact the QUEST team and we will help you add it. Otherwise, open an issue to get in touch.
+
+## License
 
 The QUEST notebooks are released for educational use. The tutorial series under `tutorials/` and `qbraid-lab-demo/` are separate repositories under their own licenses.

@@ -105,22 +105,4 @@ Included in this repository as submodules under `tutorials/`.
 | [IEEE QCE25 tutorial](tutorials/IEEE_QCE25_QC_on_QC_Tutorial) | Quantum chemistry on quantum computers: fermion-to-qubit mappings and VQE. |
 | [qBraid Lab demos](qbraid-lab-demo) | Using the platform: job submission, devices, and other SDKs through one interface. |
 
-## Repository layout
-
-```
-qBraid-QUEST/
-├── README.md
-├── NOTEBOOK_DETAILS.md                  this file
-├── RESOURCES.md                         external material, by topic
-├── foundations/
-├── algorithms/
-├── noise_and_hardware/
-├── chemistry_and_physics/
-├── machine_learning_and_optimization/
-├── cryptography_and_security/
-├── requirements/                        core.txt for all notebooks; chem.txt for the VQE notebook
-├── tutorials/                           qBraid tutorial series (submodules)
-└── qbraid-lab-demo/                     platform demonstrations (submodule)
-```
-
 Tested with qiskit 2.5.2, qiskit-aer 0.17.2 and qbraid 0.12.2 and 0.13.
