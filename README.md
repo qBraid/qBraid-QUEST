@@ -29,6 +29,7 @@ qBraid-QUEST/
 ├── chemistry_and_physics/               VQE for H2, Ising model dynamics
 ├── machine_learning_and_optimization/   variational classifier, QAOA
 ├── cryptography_and_security/           BB84, Shor's algorithm
+├── demos/                               walkthrough of the qBraid SDK on IQM Garnet and IBM (Grover)
 ├── requirements/                        core.txt for all notebooks; chem.txt for the VQE notebook
 ├── tests/                               checks that run without hardware or credits
 ├── tutorials/                           longer qBraid tutorial series (submodules)
